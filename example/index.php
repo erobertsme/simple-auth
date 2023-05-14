@@ -3,7 +3,7 @@ $config = require_once '../config.example.php';
 require_once '../auth.php';
 $auth = new Auth($config);
 
-if ( !$auth->is_logged_in() ) return header('Location: login.php');
+if ( !$auth->is_logged_in() ) return header('Location: /login.php');
 
 ?>
 <!DOCTYPE html>

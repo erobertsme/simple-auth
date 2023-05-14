@@ -7,7 +7,7 @@ if ( isset($_GET['logout']) ) {
   $auth->logout('/login.php');
 }
 
-if( $auth->is_logged_in() ) return header('Location: /example/');
+if( $auth->is_logged_in() ) return header('Location: /');
 
 // Handle POST and login attempt
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if ( isset($login_result['error']) ) return header('Location: /login.php?error='.$login_result['error']);
 
   // Login successful
-  header('Location: /example/');
+  header('Location: /');
   exit();
 }
 
