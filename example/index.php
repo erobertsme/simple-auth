@@ -1,5 +1,5 @@
 <?php
-$config = require_once '../config.example.php';
+$config = require_once '../config.php';
 require_once '../auth.php';
 $auth = new Auth($config);
 
