@@ -7,7 +7,7 @@ if ( isset($_GET['logout']) ) {
   $auth->logout('/login.php');
 }
 
-if( $auth->is_logged_in() ) return header('Location: /');
+if( $auth->is_logged_in() ) return header('Location: /example/');
 
 // Handle POST and login attempt
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if ( isset($login_result['error']) ) return header('Location: /login.php?error='.$login_result['error']);
 
   // Login successful
-  header('Location: /');
+  header('Location: /example/');
   exit();
 }
 
@@ -55,7 +55,7 @@ function error_alert() {
         <h1>Login</h1>
       </div>
 
-      <form method="POST" action="/login.php">
+      <form method="POST" action="">
         <div class="mb-3">
         <label for="username" class="form-label">Username</label>
           <input type="text" name="username" required>

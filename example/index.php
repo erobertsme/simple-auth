@@ -3,7 +3,7 @@ $config = require_once '../config.example.php';
 require_once '../auth.php';
 $auth = new Auth($config);
 
-if ( !$auth->is_logged_in() ) return header('Location: /login.php');
+if ( !$auth->is_logged_in() ) return header('Location: login.php');
 
 ?>
 <!DOCTYPE html>
@@ -16,6 +16,6 @@ if ( !$auth->is_logged_in() ) return header('Location: /login.php');
 </head>
 <body style="text-align: center;">
   <h1>Success!</h1>
-  <a href="/login.php?logout">Logout</a>
+  <a href="login.php?logout">Logout</a>
 </body>
 </html>
