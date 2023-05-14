@@ -1,0 +1,1 @@
+This is a very basic implementation of a simple JWT authentication.
