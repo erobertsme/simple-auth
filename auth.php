@@ -7,11 +7,15 @@ class Auth {
     $this->config = $config;
   }
 
-  public function validate_credentials($username, $password) {
-    // This can be changed to use any method of retrieving login credentials for validation
-    if ($username === $this->config['username'] && $password === $this->config['password']) return true;
+  private function generate_credentials_hash($username, $password) {
+    return base64_encode( hash_hmac('sha256', $username.'|'.$password, $this->config['jwt_secret'], true) );
+  }
 
-    return false;
+  public function validate_credentials($login_hash) {
+    // This can be changed to use any method of retrieving login credentials for validation 
+    $stored_credentials = $this->generate_credentials_hash($this->config['username'],$this->config['password']);
+
+    return $login_hash === $stored_credentials;
   }
 
   public function validate_jwt($jwt) {
@@ -32,7 +36,7 @@ class Auth {
     $data = json_decode($payload, true);
 
     // Validate JWT data against stored credentials
-    if( !$this->validate_credentials($data['username'], $data['password']) ) return false;
+    if( !$this->validate_credentials($data->user) ) return false;
 
     // Check for JWT expiration
     if (isset($data['exp']) && $data['exp'] < time()) return false;
@@ -50,14 +54,13 @@ class Auth {
 
     // Create JWT payload with user data and expiration time
     $payload = [
-      'username' => $username,
-      'password' => $password,
+      'user' => base64_encode( hash_hmac('sha256', "{$username}|{$password}",$this->config['jwt_secret'], true) ),
       'exp' => time() + ($expiration_hours * 3600)
     ];
     $payload_encoded = base64_encode( json_encode($payload) );
 
     // Create JWT signature
-    $signature = hash_hmac('sha256', $header_encoded . '.' . $payload_encoded, $this->config['jwt_secret'], true);
+    $signature = base64_encode( hash_hmac('sha256', "{$header_encoded}.{$payload_encoded}", $this->config['jwt_secret'], true) );
     $signature_encoded = base64_encode($signature);
 
     // Create JWT by concatenating header, payload, and signature with periods
@@ -70,7 +73,7 @@ class Auth {
     // Check for jwt in cookie
     if ( !isset($_COOKIE['jwt']) ) return false;
     // Validate JWT. Can't just let anyone with any "jwt" cookie in, can we?
-    if ( !$this->validate_jwt($_COOKIE['jwt']) ) return $this->logout();
+    if ( !$this->validate_jwt($_COOKIE['jwt']) ) return false;
 
     return true;
   }
@@ -78,21 +81,23 @@ class Auth {
   public function login($username, $password) {
     if ( empty($username) || empty($password) ) return ['error' => 'incomplete'];
 
-    if ( !$this->validate_credentials($username, $password) ) return ['error' => 'invalid'];
+    $login_hash = $this->generate_credentials_hash($username, $password);
+
+    if ( !$this->validate_credentials($login_hash) ) return ['error' => 'invalid'];
 
     // Successful login
-    if ( $this->validate_credentials($username, $password) ) { // Redundant, but why not?
+    if ( $this->validate_credentials($login_hash) ) { // Redundant, but why not?
       // Credentials are valid, create JWT token
       $expiration_time = time() + (20 * 3600); // 20 hours from now
       $jwt = $this->create_jwt($username, $password, 20);
-      setcookie('jwt', $jwt, $expiration_time, '/');
+      setcookie('token', $jwt, $expiration_time, '/');
 
       return ['success'];
     }
   }
 
   public function logout($redirect = '/') {
-    setcookie('jwt', '', time() - 3600, '/');
+    setcookie('token', '', time() - 3600, '/');
     return header('Location: '.$redirect);
   }
 }
