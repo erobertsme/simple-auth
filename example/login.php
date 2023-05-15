@@ -1,7 +1,5 @@
 <?php
-$config = require_once 'config.php';
-require_once '../auth.php';
-$auth = new Auth($config);
+require_once 'auth.php';
 
 if ( isset($_GET['logout']) ) {
   $auth->logout('/login.php');

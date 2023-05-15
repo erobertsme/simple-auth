@@ -1,7 +1,5 @@
 <?php
-$config = require_once 'config.php';
-require_once '../auth.php';
-$auth = new Auth($config);
+require_once 'auth.php';
 
 if ( !$auth->is_logged_in() ) return header('Location: /login.php');
 

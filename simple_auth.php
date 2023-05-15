@@ -1,6 +1,6 @@
 <?php
 
-class Auth {
+class Simple_Auth {
   private $config;
 
   function __construct($config) {
@@ -12,8 +12,8 @@ class Auth {
     return str_replace('=', '', $base64_secret);
   }
 
-  public function generate_credentials_hash($username, $password) {
-    return base64_encode( hash_hmac('sha256', $username.'|'.$password, $this->get_encoded_secret(), true) );
+  public function generate_credentials_hash($username, $password, $secret) {
+    return base64_encode( hash_hmac('sha256', $username.'|'.$password, $secret, true) );
   }
 
   private function validate_credentials($login_hash) {
@@ -56,7 +56,7 @@ class Auth {
 
     // Create JWT payload with user data and expiration time
     $payload = [
-      'auth' => $this->generate_credentials_hash($username, $password),
+      'auth' => $this->generate_credentials_hash($username, $password, $this->get_encoded_secret()),
       'exp' => time() + ($expiration_hours * 3600)
     ];
     $payload_encoded = base64_encode( json_encode($payload) );
@@ -82,7 +82,7 @@ class Auth {
   public function login($username, $password) {
     if ( empty($username) || empty($password) ) return ['error' => 'incomplete'];
 
-    $login_hash = $this->generate_credentials_hash($username, $password);
+    $login_hash = $this->generate_credentials_hash($username, $password, $this->get_encoded_secret());
 
     if ( !$this->validate_credentials($login_hash) ) return ['error' => 'invalid'];
 
