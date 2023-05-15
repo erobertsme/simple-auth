@@ -6,7 +6,7 @@ return [
       'username' => 'admin',
       'password' => 'pass'
     ];
-    $stored_credentials = $instance->generate_credentials_hash($login['username'], $login['password']);
-    return $login_hash === $stored_credentials;
+    $valid_credentials = $instance->generate_credentials_hash($login['username'], $login['password']);
+    return $login_hash === $valid_credentials;
   }
 ];
