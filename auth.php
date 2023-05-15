@@ -16,14 +16,14 @@ class Auth {
     return base64_encode( hash_hmac('sha256', $username.'|'.$password, $this->get_encoded_secret(), true) );
   }
 
-  public function validate_credentials($login_hash) {
+  private function validate_credentials($login_hash) {
     // This can be changed to use any method of retrieving login credentials for validation 
     $stored_credentials = $this->generate_credentials_hash($this->config['username'], $this->config['password']);
 
     return $login_hash === $stored_credentials;
   }
 
-  public function validate_jwt($token) {
+  private function validate_jwt($token) {
     // Verify signature and decode JWT payload
     $parts = explode('.', $token);
     $header = base64_decode($parts[0]);
@@ -49,7 +49,7 @@ class Auth {
     return true;
   }
 
-  public function create_jwt($username, $password, $expiration_hours) {
+  private function create_jwt($username, $password, $expiration_hours) {
     // Create JWT header
     $header = [
       'alg' => 'HS256',
