@@ -32,7 +32,7 @@ $auth->logout('/login.php'); // forces cookie expiration and redirects to argume
 ---
 ### Notes
 
-`validate_credentials()` can be changed to use any method of retrieving login credentials for validation, but must use `generate_credentials_hash()` to validate and take one argument that is the result of using `generate_credentials_hash($username, $password)`.
+`validate_credentials()` can be changed to use any method of retrieving login credentials for validation, but must use `generate_credentials_hash()` to validate and take one argument that is the result of using `generate_credentials_hash($username, $password)`. I would like to change this to use a `validation` function passed in the `$config` during instantiation.
 
 
 `login()` and `logout()` must be called before any headers are sent.
