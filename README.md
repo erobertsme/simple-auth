@@ -1,6 +1,8 @@
 
 ## Simple JWT Auth
-This is a very basic implementation of a simple JWT authentication.
+This is a very basic implementation of a simple JWT (JSON Web Token) authentication. When used it stores a JWT in a cookie. The stored auth token is encrypted using sha256 in the `generate_credentials_hash()` method which uses the `jwt_secret` encoded with base64 as the key.
+
+This was made to use a single set of login credentials, but was designed so the `validate_credentials()` function can be changed to retrieve credentials using another method like from a database.
 
 ---
 
@@ -20,6 +22,10 @@ $auth =  new  Auth($config);
 $auth->login('admin', 'pass')  // returns ['success']
 $auth->login('wrong', 'login') // returns ['error' => 'invalid']
 $auth->login('user', '')       // returns ['error' => 'incomplete']
+
+$auth->is_logged_in(); // returns true if valid token stored in cookie
+
+$auth->logout('/login.php'); // forces cookie expiration and redirects to argument or '/' if left empty
 
 ```
 
