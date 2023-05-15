@@ -17,7 +17,7 @@ class Simple_Auth {
   }
 
   private function validate_credentials($login_hash) {
-    return $this->config['validate_function']($login_hash, $this);
+    return $this->config['validate_function']( $login_hash, $this, $this->get_encoded_secret() );
   }
 
   private function validate_jwt($token) {
