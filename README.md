@@ -9,7 +9,7 @@ This was made to use a single set of login credentials, but was designed so the 
 ### Example Usage
 
 ```php
-require_once  'auth.php';
+require_once 'auth.php';
 
 $config = [
   'username'    =>  'admin',
@@ -17,11 +17,11 @@ $config = [
   'jwt_secret'  =>  'hunter2'
 ];
 
-$auth =  new  Auth($config);
+$auth = new Auth($config);
 
-$auth->login('admin', 'pass')  // returns ['success']
-$auth->login('wrong', 'login') // returns ['error' => 'invalid']
-$auth->login('user', '')       // returns ['error' => 'incomplete']
+$auth->login('admin', 'pass');  // returns ['success']
+$auth->login('wrong', 'login'); // returns ['error' => 'invalid']
+$auth->login('user', '');       // returns ['error' => 'incomplete']
 
 $auth->is_logged_in(); // returns true if valid token stored in cookie
 
