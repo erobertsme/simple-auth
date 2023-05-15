@@ -10,8 +10,8 @@ This is a very basic implementation of a simple JWT authentication.
 require_once  'auth.php';
 
 $config = [
-  'username'  =>  'admin',
-  'password'  =>  'pass',
+  'username'    =>  'admin',
+  'password'    =>  'pass',
   'jwt_secret'  =>  'hunter2'
 ];
 
