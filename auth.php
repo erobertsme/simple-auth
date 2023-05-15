@@ -12,15 +12,12 @@ class Auth {
     return str_replace('=', '', $base64_secret);
   }
 
-  private function generate_credentials_hash($username, $password) {
+  public function generate_credentials_hash($username, $password) {
     return base64_encode( hash_hmac('sha256', $username.'|'.$password, $this->get_encoded_secret(), true) );
   }
 
   private function validate_credentials($login_hash) {
-    // This can be changed to use any method of retrieving login credentials for validation 
-    $stored_credentials = $this->generate_credentials_hash($this->config['username'], $this->config['password']);
-
-    return $login_hash === $stored_credentials;
+    return $this->config['validate_function']($login_hash, $this);
   }
 
   private function validate_jwt($token) {
