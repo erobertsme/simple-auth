@@ -177,16 +177,4 @@ class Simple_Auth {
 
     return ['success' => $jwt];
   }
-
-  /**
-   * Checks if a user is currently logged in.
-   *
-   * @return bool True if the user is logged in, false otherwise.
-   */
-  public function is_logged_in() {
-    if ( !isset($_COOKIE['token']) ) return false;
-    if ( !$this->validate_token($_COOKIE['token']) ) return false;
-
-    return true;
-  }
 }
