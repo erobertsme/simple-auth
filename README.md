@@ -1,6 +1,6 @@
 # Simple Auth
 
-Simple Auth is a single file class that provides a simple and secure way to handle user authentication and authorization using JSON Web Tokens (JWTs). It is designed to be easy to use and integrate into any PHP application. Simple Auth does not handle account creation, password management, token storage/management, or .
+Simple Auth is a single file class that provides a simple and secure way to handle user authentication and authorization using JSON Web Tokens (JWTs). It is designed to be easy to use and integrate into any PHP application. Simple Auth does not handle account creation, password management, token storage/management. The goal of this project is to handle the creation and validation of JWTs.
 
 ## Installation
 
